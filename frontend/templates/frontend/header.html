@@ -1,0 +1,77 @@
+{% load static %}
+
+<header class="row align-center row-gap-2 pr-1 mt-halfrem ">
+  
+    <div style="margin : auto;" class="header_search_wrapper ml-auto mr-1 ">
+        <input type="text" placeholder="Search... ">
+        <img src="{% static 'frontend/assets/search.svg' %}" alt="">
+    </div>
+    <ul class="row notificationList align-center ml-auto ">
+        <li class="hideonmobile">
+            <img src="{% static 'frontend/assets/heart.svg' %}" alt="">
+        </li>
+        <li class="notificationicon hideonmobile">
+            <img class="ring" src="{% static 'frontend/assets/ring.svg' %}" alt="">
+            <img class="ring1" src="{% static 'frontend/assets/ring2.svg' %}" alt="">
+        </li>
+        <li class="country ml-halfrem" style="position: relative;">
+            <div class="cursor-pointer drop-down-menu-btn" onclick="openDropDown()">
+                <span class="country0 countryFlagRound">{{ country.country_name }}</span>
+                <img class="ml-1" src="{% static 'frontend/assets/chevron-down.svg' %}" alt="">
+            </div>
+            <ul id="listCountry"
+            class='drop-down-menu ' >
+          
+           
+            </ul>
+        </li>
+
+    </ul>
+</header>
+<style>
+    .country0::before {
+        background : url('{{ country.country_flag }}') no-repeat  center center;
+        background-size: contain;
+    }
+</style>
+<script>
+    fetch("https://slusajradio.live/api/getCountries")
+    .then(response => response.json())
+    .then(data => {
+        countries = data['countries']
+        li = document.querySelector("#listCountry")
+        for (var i = 0; i < countries.length; i ++ )
+        {
+            li.innerHTML += `
+            <style>
+                .country${i + 1}::before {
+                    background : url(${countries[i]['country_flag']}) no-repeat  center center;
+                    background-size: contain;
+                }
+            </style>
+            <a href="http://slusajradio.live/country/${countries[i]['country_code']}"><li class="drop-down-item ">     <span class="country${i+1} countryFlagRound">${countries[i]['country_name']}</span>
+           
+            </li>     </a>
+            
+          
+            `
+        }
+    })
+    const openDropDown = ()=>{
+ 
+        document.querySelector('.drop-down-menu').classList.toggle('active')
+    }
+</script>
+<div class="row justify-between pt-halfrem align-center showontablet">
+    <div onclick="openSidebar()" class="leftBars bars cursor-pointer">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+ <div class="logomob cursor-pointer"><a href="{% url 'index' %}"><h3 class="color-pink">slusajradio.live</h3 ></a></div>
+ <div onclick="openPlayHistory()" class="rightBars bars cursor-pointer">
+     <span></span>
+     <span class="ml-auto"></span>
+     <span></span>
+ </div>
+ </div>

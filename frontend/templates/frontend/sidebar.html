@@ -1,0 +1,39 @@
+{% load static %}
+
+<div class="col-3 p-1 sidebar ">
+    <span  onclick="closeSidebar()" class="times showontablet" ><strong>X</strong></span>
+    <ul class="">
+        <li class="row  align-center mb-halfrem nobefore"><img src="{% static 'frontend/assets/fav.png' %}" alt="" style="    width: 43px;
+            object-fit: cover;
+            margin-right: 10px;">
+            
+            <a href="{% url 'index' %}"><h4 class=" color-pink"> RadioLite</h4></a>
+        </li>
+        <li class="text-uppercase  nobefore">
+            <strong>Menu</strong>
+        </li>
+        <li class="active"><img src="{% static 'frontend/assets/discover.svg' %}" alt=""><span class="ml-1">Discover</span></li>
+        <li class=""><img src="{% static 'frontend/assets/explorer.svg' %}" alt=""><span class="ml-1">Explorer</span></li>
+        <li class="mb-1"><img src="{% static 'frontend/assets/search.svg' %}" alt=""><span class="ml-1">Search</span></li>
+        <li class="text-uppercase  nobefore">
+            <strong>Library</strong>
+        </li>
+        <li class=""><img src="{% static 'frontend/assets/mymusic.svg' %}" alt=""><span class="ml-1">My Music</span></li>
+        <li class=""><img src="{% static 'frontend/assets/albums.svg' %}" alt=""><span class="ml-1">Albums</span></li>
+        <li class="mb-1"><img src="{% static 'frontend/assets/artists.svg' %}" alt=""><span class="ml-1">Artists</span></li>
+        <li class="text-uppercase  nobefore">
+            <strong>Playlist</strong>
+        </li>
+        <li class=""><img src="{% static 'frontend/assets/heart.svg' %}" alt=""><span class="ml-1">Favourites</span></li>
+        <li class=""><img src="{% static 'frontend/assets/shared.svg' %}" alt=""><span class="ml-1">Shared</span></li>
+        <li class="mb-1"><img src="{% static 'frontend/assets/download.svg' %}" alt=""><span class="ml-1">Downloads</span></li>
+        <li class="text-uppercase  nobefore">
+           
+        </li>
+        {% if options.sidebarAD %}
+        <div>
+            {{ options.sideBARAD | safe }}
+        </div>
+        {% endif %}
+    </ul>
+</div>

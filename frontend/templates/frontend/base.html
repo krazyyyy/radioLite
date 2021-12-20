@@ -1,0 +1,126 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="hr">
+
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VJ3CWRQRTB"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'G-VJ3CWRQRTB');
+    </script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RadioLite - {% block title %} {% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'frontend/styles/styles.css' %}">
+    <meta property="og:locale" content="hr_HR">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="slusajradio.live">
+    <meta property="og:url" content="https://slusajradio.live/">
+    <meta property="og:site_name" content="prvi.hr">
+    <meta property="og:image" content="{% static 'frontend/assets/fav.png' %}">
+    <link rel="icon" type="image/png" href="{% static 'frontend/assets/fav.png' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+</head>
+
+<body>
+    {% block body %}
+    {% endblock %}
+
+    <div class="row align-center justify-between fixed-footer">
+        <div class="col-3 row justify-center fixed-footer-item">
+            <img src="{% static 'frontend/assets/discover.svg' %}" alt="Home">
+        </div>
+        <div class="col-3 row justify-center fixed-footer-item">
+            <img src="{% static 'frontend/assets/explorer.svg' %}" alt="">
+
+        </div>
+        <div class="col-3 row justify-center fixed-footer-item">
+            <img src="{% static 'frontend/assets/shared.svg' %}" alt="">
+
+        </div>
+        <div class="col-3 row justify-center fixed-footer-item">
+            <img src="{% static 'frontend/assets/setting.svg' %}" alt="">
+
+        </div>
+    </div>
+
+    <div id="open-modal" class="modal-window">
+        <div>
+            <a href="#" title="Close" class="modal-close">Close</a>
+            <h1>Share!</h1>
+            <div> <br />
+                <div align="center" class="socialbtns">
+                    <ul>
+
+                        <li><a id="twitterURL" target="_blank"><img class="social_icons_m"
+                                    src="{% static 'frontend/assets/twitter.svg' %}" alt=""> </a></li>
+                        <li><a id="facebookURL" href="#" target="blank"><img class="social_icons_m"
+                                    src="{% static 'frontend/assets/facebook.svg' %}" alt=""> </a></li>
+                        <li><a href="#"><img onclick="Copy()" class="social_icons_m"
+                                    src="{% static 'frontend/assets/copy.svg' %}" alt=""> </a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js">
+            </script>
+
+            <script>
+               $('input[type=range]').wrap("<div class='range'></div>");
+var i = 1;
+
+$('.range').each(function() {
+  var n = this.getElementsByTagName('input')[0].value;
+  var x = (n / 100) * (this.getElementsByTagName('input')[0].offsetWidth - 8) - 12;
+  
+  this.id = 'range' + i;
+  if (this.getElementsByTagName('input')[0].value == 0) {
+    this.className = "range"
+} else {
+    this.className = "range rangeM"
+  }
+  this.innerHTML += "<style>#" + this.id + " input[type=range]::-webkit-slider-runnable-track {background:linear-gradient(to right, #FF2692 0%, #FF2692 " + n + "%, #515151 " + n + "%)} #" + this.id + ":hover input[type=range]:before{content:'" + n + "'!important;left: " + x + "px;} #" + this.id + ":hover input[type=range]:after{left: " + x + "px}</style>";
+  i++
+});
+
+            $('input[type=range]').on("input", function() {
+            var a = this.value;
+            audio.volume = a / 100
+            var p = (a / 100) * (this.offsetWidth - 8) - 12;
+            
+            if (a == 0) {
+                this.parentNode.className = "range"
+            } else {
+                this.parentNode.className = "range rangeM"
+            }
+            this.parentNode.getElementsByTagName('style')[0].innerHTML += "#" + this.parentNode.id + " input[type=range]::-webkit-slider-runnable-track {background:linear-gradient(to right, #3f51b5 0%, #3f51b5 " + a + "%, #515151 " + a + "%)} #" + this.parentNode.id + ":hover input[type=range]:before{content:'" + a + "'!important;left: " + p + "px;} #" + this.parentNode.id + ":hover input[type=range]:after{left: " + p + "px}";
+            })
+
+                const openSidebar = () => {
+                    document.querySelector('.sidebar').classList.add('active')
+                }
+                const closeSidebar = () => {
+                    document.querySelector('.sidebar').classList.remove('active')
+
+                }
+                const openPlayHistory = () => {
+                    document.querySelector('.play-history').classList.add('active')
+                }
+                const closePlayHistory = () => {
+                    document.querySelector('.play-history').classList.remove('active')
+
+                }
+            </script>
+</body>
+
+</html>
