@@ -12,21 +12,20 @@
         <li class="text-uppercase  nobefore">
             <strong>Menu</strong>
         </li>
-        <li class="active"><img src="{% static 'frontend/assets/discover.svg' %}" alt=""><span class="ml-1">Discover</span></li>
-        <li class=""><img src="{% static 'frontend/assets/explorer.svg' %}" alt=""><span class="ml-1">Explorer</span></li>
-        <li class="mb-1"><img src="{% static 'frontend/assets/search.svg' %}" alt=""><span class="ml-1">Search</span></li>
+        <li id="home_sidebar"><img src="{% static 'frontend/assets/discover.svg' %}" alt=""><a href="{% url 'index' %}"><span class="ml-1">Home</span></a></li>
+        <li id="exploreSide" class=""><img src="{% static 'frontend/assets/explorer.svg' %}" alt=""><a href="/popular"><span class="ml-1">Popular</span></a></li>
+        <li class="mb-1" id="search_sidebar"><img src="{% static 'frontend/assets/search.svg' %}" alt=""><span id="search_trazi" class="ml-1">Search</span></li>
         <li class="text-uppercase  nobefore">
             <strong>Library</strong>
         </li>
-        <li class=""><img src="{% static 'frontend/assets/mymusic.svg' %}" alt=""><span class="ml-1">My Music</span></li>
-        <li class=""><img src="{% static 'frontend/assets/albums.svg' %}" alt=""><span class="ml-1">Albums</span></li>
-        <li class="mb-1"><img src="{% static 'frontend/assets/artists.svg' %}" alt=""><span class="ml-1">Artists</span></li>
+        <li class="" id="popularno"><img src="{% static 'frontend/assets/mymusic.svg' %}" alt=""><a href="/popular"><span class="ml-1">Popular</span></a></li>
+        <li id="novo_side" class="mb-1"><img src="{% static 'frontend/assets/artists.svg' %}" alt=""><a href="{% url 'latestPage' %}"><span class="ml-1">Latest</span></a></li>
         <li class="text-uppercase  nobefore">
             <strong>Playlist</strong>
         </li>
-        <li class=""><img src="{% static 'frontend/assets/heart.svg' %}" alt=""><span class="ml-1">Favourites</span></li>
-        <li class=""><img src="{% static 'frontend/assets/shared.svg' %}" alt=""><span class="ml-1">Shared</span></li>
-        <li class="mb-1"><img src="{% static 'frontend/assets/download.svg' %}" alt=""><span class="ml-1">Downloads</span></li>
+        <li id="favSidebar" class=""><img src="{% static 'frontend/assets/heart.svg' %}" alt=""><a href="{% url 'favouritePage' %}"><span class="ml-1">Favourites</span></a></li>
+        <li class=""><img src="{% static 'frontend/assets/shared.svg' %}" alt=""><a href="#open-modal"><span class="ml-1">Shared</span></a></li>
+
         <li class="text-uppercase  nobefore">
            
         </li>
@@ -37,3 +36,40 @@
         {% endif %}
     </ul>
 </div>
+<div id="search-box">
+    <div class="container_search">
+      <a class="close" href="#close"></a>
+      <div class="search-main">
+        <div class="search-inner">
+        <form action="{% url 'search' %}" method="POST">
+            {% csrf_token %}
+          <input type="text" id="inputSearch" name="keyword" placeholder="search..">
+          <input type="hidden" name="country_id" value="{{ country.id }}">
+        </form>
+          <span class="search-info">Hit enter to search or ESC to close</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    
+    $('#search_trazi').click(function() {
+  event.preventDefault()
+  $("#search-box").addClass("-open");
+  setTimeout(function() {
+    inputSearch.focus();
+  }, 800);
+});
+
+$('a[href="#close"]').click(function() {
+  event.preventDefault()
+  $("#search-box").removeClass("-open");
+});
+
+$(document).keyup(function(e) {
+  if (e.keyCode == 27) { // escape key maps to keycode `27`
+    $("#search-box").removeClass("-open");
+  }
+});
+</script>

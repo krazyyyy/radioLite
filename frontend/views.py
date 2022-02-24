@@ -9,10 +9,49 @@ def index(request):
         "country" : Countries.objects.get(id=1)
     })
 
+def explore(request):
+    return render(request, 'frontend/explore.html', {
+        "country" : Countries.objects.get(id=1)
+    })
+
 def genre(request, pk):
     return render(request, 'frontend/genre.html', {
         "keyword" : pk,
         "country" : Countries.objects.get(id=1)
+    })
+
+def favouritePage(request):
+    country = Countries.objects.get(id=1)
+    return render(request, 'frontend/favourite.html', {
+        "country" : country
+    })
+
+def search(request):
+    pk = request.POST.get("keyword")
+    countryOBJ = Countries.objects.get(id=1)
+    radios = RadioList.objects.filter(play_link__contains=pk)
+    
+    return render(request, 'frontend/search.html', {
+        'radios' : radios,
+        'country' : countryOBJ
+    })
+
+def popularPage(request):
+  
+    radios = RadioList.objects.all().order_by("?")[:20]
+    
+    return render(request, 'frontend/popular.html', {
+        'radios' : radios,
+        'country' : Countries.objects.get(id=1)
+    })
+
+def latestPage(request):
+  
+    radios = RadioList.objects.all().order_by("-id")[:20]
+    
+    return render(request, 'frontend/popular.html', {
+        'radios' : radios,
+        'country' : Countries.objects.get(id=1)
     })
 
 

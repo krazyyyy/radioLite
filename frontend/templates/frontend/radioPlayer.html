@@ -215,6 +215,13 @@
               <div class="playermainactions row flex_between col-12 ">
                
                   <div class="prev">
+                    {% if fav %}
+                    <img onclick="removeFav()" id="favHeart" class="hr_ds" style="height: 28px;" src="{% static 'frontend/assets/heart_red.svg' %}" alt="">
+                    {% else %}
+                    <img onclick="addFav()" id="favHeart" class="hr_ds" style="height: 28px;" src="{% static 'frontend/assets/heart.svg' %}" alt="">
+                  {% endif %}
+                  </div>
+                  <div class="prev">
                       <img src="{% static 'frontend/assets/kite2.svg' %}" alt="">
 
                   </div>
@@ -320,6 +327,19 @@
   radio_img = 'https://i.pinimg.com/originals/5c/4a/1c/5c4a1cef8a1ebd3584fac99c817b173c.gif' 
   radio_id = '{{ radio.id }}'
   play_link = '{{ radio.play_link }}'
+
+  function addFav() {
+      fetch(`/api/addFavourite/${radio_id}`)
+      document.querySelector("#favHeart").removeAttribute("onclick")
+      document.querySelector("#favHeart").src = "/static/frontend/assets/heart_red.svg"
+      document.querySelector("#favHeart").setAttribute("onclick", "removeFav()")
+  }
+  function removeFav() {
+      fetch(`/api/removeFavourite/${radio_id}`)
+      document.querySelector("#favHeart").removeAttribute("onclick")
+      document.querySelector("#favHeart").src = "/static/frontend/assets/heart.svg"
+      document.querySelector("#favHeart").setAttribute("onclick", "addFav()")
+    }
 
   document.querySelector("#radioNameTop").innerHTML = play_link
       function getCurrentName() {

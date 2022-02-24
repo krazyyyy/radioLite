@@ -1,0 +1,176 @@
+{% extends 'frontend/base.html' %}
+{% load static %}
+{% block title %} Radios {% endblock %}
+
+{% block body %}
+    <div class="row allPage">
+        {% include 'frontend/sidebar.html' %}
+        <div class="wid-100 background-light pl-1 pr-1  ">
+        {% include 'frontend/header.html' %}
+        <main class="row justify-between">
+            <div class="row wid-100 dir-col row-gap-2 ">
+              
+                <div class="background-white p-1  b-rad-18">
+                    <div class="row justify-between">
+                        <h2 class="color-pink text-uppercase mb-1">Results</h2>
+                        
+                    </div>
+                </div>
+                    <div id="radio-list">
+                    {% for radio in radios %}
+
+                        <div class="background-white p-1  b-rad-18 mb-1">
+                            <div class="radio_cards row justify-between wrap">
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <td id="play_1" width="74" class="text-center">
+                                                <div id="jquery_jplayer_1" class="jp-jplayer" style="width: 0px; height: 0px;"><img id="jp_poster_0" style="width: 0px; height: 0px; display: none;"><audio id="audio{{radio.id}}" preload="none" class="radioAudios" src="{{ radio.radio_name }}"></audio></div>
+                                                    <div class="audio_streams" role="application" aria-label="media player">
+                                                        <div class="jp-type-single">
+                                                            <div class="jp-gui jp-interface">
+                                                                <div class="playBtnRadio">
+                                                                    <img onclick="playRadio('{{  radio.id }}', '{{ radio.play_link }}')" class="playButtons" id="btnPlay{{ radio.id }}" style="font-size: 60px; cursor : pointer;" src="/static/frontend/assets/play_pink.svg">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                                           
+                                                    </div>
+                                                <small class="hidden-xs" onclick="openPlayer('{{ radio.id }}', '{{ radio.play_link }}')" style="margin:1px; cursor : pointer;" >popup <img style="height: 14px; cursor: pointer;" class="mdi-action-launch" src="/static/frontend/assets/external.svg">			</small>
+                                                
+                                                </td>
+                                                <td style=" padding: 20px;">
+                                                    <h4 class="text-danger" style="display: inline; cursor : pointer"><a>{{ radio.play_link }}</a></h4>
+                                                   <br>Genres: {% for i in radio.radio_genre.all %} 
+                                                    <a style="margin : 5px;" href="/genre/{{ i.genre }}">{{ i.genre }}</a>
+                                                                {% endfor %}
+                                               </td>
+                                               <a style="display:none;" id="anchor{{ radio.id }}" href="/radioPlayer/{{ radio.id }}/"></a>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    
+                        {% endfor %}
+                    </div>
+                </div>
+               
+         
+
+            </div>
+      
+        </main>   
+        </div>
+
+    </div>
+    <div id="radio-modal" class="ebcf_modal">
+
+        <div class="ebcf_modal-content">
+          <span class="ebcf_close">&times;</span>
+          <div id="modal-content">
+      
+          </div>
+        </div>
+      
+      </div>
+      <script>
+          renames = document.querySelectorAll(".radioRename")
+          for (var i = 0; i < renames.length; i ++ ){ 
+              t = renames[i].href.replaceAll(" ", "-")
+              t = renames[i].href.replaceAll("%20", "-")
+
+              renames[i].setAttribute("href", t);
+          }
+          function openPlayer(i, j) {
+            aud = document.querySelector(`#audio${i}`).src
+            j = j.replaceAll(" ", "-")
+            if (aud.split("/")[0] == "http:") {
+                    link = `http://radiolitefm.com/radioPlayer/${i}/${j}`
+                }
+                else {
+                link = `https://radiolitefm.com/radioPlayer/${i}/${j}`
+
+            }
+                window.open(link,'newwindow','width=350,height=900');
+            }
+
+             // Get the modal
+    var ebModal = document.getElementById('radio-modal');
+
+// Get the button that opens the modal
+var ebBtn = document.getElementById("modalbtn");
+
+
+// Get the <span> element that closes the modal
+var ebSpan = document.getElementsByClassName("ebcf_close")[0];
+
+// When the user clicks the button, open the modal 
+function displayModal() {
+    ebModal.style.display = "block";
+    
+}
+
+// When the user clicks on <span> (x), close the modal
+ebSpan.onclick = function () {
+    ebModal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function (event) {
+    if (event.target == ebModal) {
+        ebModal.style.display = "none";
+    }
+}
+
+function playRadio(i, j) {
+    audio = document.querySelector(`#audio${i}`)
+    playbtn = document.querySelector(`#btnPlay${i}`)
+    j = j.replaceAll(" ", "-")
+    play_split = audio.src.split("/")
+    md_cnt = document.querySelector("#modal-content")
+    if (play_split[0] == "http:") {
+        
+        md_cnt.innerHTML = `
+        <div class="content_item">
+    
+        <p style="MARGIN: 0 50px;
+                    font-size: 12px;">
+                        Due to restrictions of your browser, it is not possible to directly play this station on our website.
+        
+            You can however play the station here in our radioliteFM.com Popup-Player.</p>
+        </div>
+        <div class="content_buttons">
+            <button class="btnContent" onclick="openPlayer(${i}, '${j}')"> Open Popup</button>  
+        </div>
+                
+            `
+            displayModal()
+        } 
+        else {
+            // auds = document.querySelectorAll(".radioAudios")
+            // for (var j = 0; j < auds.length; j ++ ) {
+            //     auds[j].pause()
+            // }
+            
+            // plys = document.querySelectorAll(".playButtons")
+            // for (var j = 0; j < plys.length; j ++ ) {
+            //     plys[j].src = "/static/frontend/assets/play_pink.svg";
+            // }
+            playbtn.src = "/static/frontend/assets/play_pink.svg";
+            if (audio.paused || audio.ended) {
+                playbtn.src = "/static/frontend/assets/pause.svg";
+                audio.play()
+                
+                
+            } else {
+                playbtn.src = "/static/frontend/assets/play_pink.svg";
+                audio.pause()
+
+            }
+        }
+}
+    
+      </script>
+  
+{% endblock %}

@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.urls import reverse
 # Create your models here.
 class Countries(models.Model):
     country_name = models.CharField(max_length=200)
@@ -19,7 +19,7 @@ class RadioList(models.Model):
     country = models.ForeignKey('Countries', on_delete=models.CASCADE, related_name="radio_country", null=True, blank=True)
 
     def get_absolute_url(self):
-        return reverse('radioPage', kwargs={'pk':self.id, 'title' : self.play_link.replace(" ", "-")})
+        return reverse('radioPlayerPage', kwargs={'pk':self.id, 'title' : self.play_link.replace(" ", "-").replace("/", "-")})
 
 
 class Genre(models.Model):
@@ -57,3 +57,12 @@ class AD_Zones(models.Model):
 
     def __str__(self):
         return f"Manage ADs"
+
+class UserSession(models.Model):
+    session = models.CharField(max_length=350)
+
+
+class Favourite(models.Model):
+    radio = models.ForeignKey(RadioList, on_delete=models.CASCADE, related_name="favourite_radio")
+    session = models.ForeignKey('UserSession', on_delete=models.CASCADE, related_name="userSession")
+    

@@ -1,14 +1,22 @@
 {% load static %}
 
-<header class="row align-center row-gap-2 pr-1 mt-halfrem ">
+<header class="row align-center row-gap-2 pr-1 mt-halfrem header_top">
   
-    <div style="margin : auto;" class="header_search_wrapper ml-auto mr-1 ">
-        <input type="text" placeholder="Search... ">
-        <img src="{% static 'frontend/assets/search.svg' %}" alt="">
+    <div style="margin : auto;" class="header_search_wrapper ml-auto mr-1 search">
+        <form action="{% url 'search' %}" method="POST" id="searchFORM">
+            {% csrf_token %}
+            <input onchange="getResults()" type="text" id="searchItem" autocomplete="off" name="keyword" placeholder="Search... ">
+            <ul class="results" id="resultListSearch">
+               
+             
+            </ul>
+            <input type="hidden" name="country_id" value="{{ country.id }}">
+            <img src="{% static 'frontend/assets/search.svg' %}" id="searchBTN" alt="">
+        </form>
     </div>
     <ul class="row notificationList align-center ml-auto ">
         <li class="hideonmobile">
-            <img src="{% static 'frontend/assets/heart.svg' %}" alt="">
+            <img src="{% static 'frontend/assets/heart.svg' %}" alt="" style="cursor: pointer;">
         </li>
         <li class="notificationicon hideonmobile">
             <img class="ring" src="{% static 'frontend/assets/ring.svg' %}" alt="">
@@ -35,7 +43,7 @@
     }
 </style>
 <script>
-    fetch("https://slusajradio.live/api/getCountries")
+    fetch("/api/getCountries")
     .then(response => response.json())
     .then(data => {
         countries = data['countries']
@@ -49,7 +57,7 @@
                     background-size: contain;
                 }
             </style>
-            <a href="http://slusajradio.live/country/${countries[i]['country_code']}"><li class="drop-down-item ">     <span class="country${i+1} countryFlagRound">${countries[i]['country_name']}</span>
+            <a href="https://slusajradio.live/country/${countries[i]['country_code']}"><li class="drop-down-item ">     <span class="country${i+1} countryFlagRound">${countries[i]['country_name']}</span>
            
             </li>     </a>
             
@@ -62,16 +70,13 @@
         document.querySelector('.drop-down-menu').classList.toggle('active')
     }
 </script>
-<div class="row justify-between pt-halfrem align-center showontablet">
+<div class="row justify-between pt-halfrem align-center showontablet" style="margin:15px 0;">
     <div onclick="openSidebar()" class="leftBars bars cursor-pointer">
-        <span></span>
-        <span></span>
-        <span></span>
+        <img src="{% static 'frontend/assets/bars.svg' %}" class="barsHg" alt="">
     </div>
- <div class="logomob cursor-pointer"><a href="{% url 'index' %}"><h3 class="color-pink">slusajradio.live</h3 ></a></div>
- <div onclick="openPlayHistory()" class="rightBars bars cursor-pointer">
-     <span></span>
-     <span class="ml-auto"></span>
-     <span></span>
+    <div class="logomob cursor-pointer"><a href="{% url 'index' %}"><h3 class="color-pink" id="radioNameTop">RadioLiteFM.com</h3 ></a></div>
+        <div onclick="openPlayHistory()" class="rightBars bars cursor-pointer">
+            <img src="{% static 'frontend/assets/bars.svg' %}" id="barHistory" class="barsHg" alt="">
+     
  </div>
  </div>

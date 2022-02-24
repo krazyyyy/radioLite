@@ -23,10 +23,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-!54wk^$!r*&3m@s3iiv)oz#v+e41#_khrkgh(f)%zlr(nm7$s^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-# ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ['radiolite.com']
+ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = ['radiolite.com']
 
 
 # Application definition
@@ -47,6 +47,8 @@ INSTALLED_APPS = [
 ]
 
 AUTH_USER_MODEL = 'userApp.CustomUser'
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

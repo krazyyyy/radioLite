@@ -303,76 +303,10 @@
         })
     }
 
-      function getCurrentName() {
-        fetch(`/api/currentPlaying/${radio_id}`)
-        .then(response => response.json())
-        .then(data => {
-          document.querySelector("#currentPlaying").innerHTML = data['playing']
-         
-        })
-      
-      }
-      country = '{{ country.id }}'
-      fetch(`/api/renderRadioNews/${country}`)
-        .then(response => response.json())
-        .then(data => {
-            recList = document.querySelector("#recentPlayingList")
-          for (var i = 0; i < data['feed'].length; i ++ ) {
-            
-            recList.innerHTML += `
-            <a href="#" id="no_img" class="row col-gap-1  align-center" style="flex-wrap: wrap;">
-                 
-                    <div >
-                        <span class="lead"><strong>${data['feed'][i]['title']}</strong></span><br><br>
-                    </div>
-                
-                    <div style="margin:1px; padding:0;" class="background-white p-1 row justify-between">
-                    <div>
-                        <small>${data['feed'][i]['source']}</small>
-                    </div>
-                    <a href="${data['feed'][i]['link']}" rel="nofollow" target="blank"><h5>Pročitaj više</h5></a>
-                    </div>
-                    
-            </a>
-            
-            `
-        }
-        })
-  
-      function getRecentPlaying() {
-        fetch(`/api/recentPlaying/${radio_id}`)
-        .then(response => response.json())
-        .then(data => {
-          recList = document.querySelector("#recentPlayingList")
-          for (var i = 0; i < data['history'].length; i ++ ) {
-            if (data['history'][i]['img_link'] != "" && data['history'][i]['img_link'] != null) {
-              im = `<img src='${data['history'][i]['img_link']}'>`
-            }
-            else {
-              im = ""
-            }
-            recList.innerHTML += `
-            <a href="#" class="row col-gap-1  align-center">
-                    <span class="color-gray side_bar_number col-2"> ${i}</span>
-                    <div class="side_bar_logo_img img_container background-gray">
-                      ${im}
-                    </div>
-                    <div >
-                        <span class="lead"><strong>${data['history'][i]['name']}</strong></span><br><br>
-                    </div>
-                    <div class=" side_bar_dots ml-auto  row ">
-                            <span class="side_bar_dot background-gray"></span>
-                            <span class="side_bar_dot background-gray"></span>
-                    </div>
-                    
-            </a>
-            
-            `
-          }
-        })
-      }
    
-      getCurrentName()
+      country = '{{ country.id }}'
+    
+
       
     var openRadio = document.getElementById("openRadio");
         openRadio.addEventListener('click', () => {

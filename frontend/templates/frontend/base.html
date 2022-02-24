@@ -18,17 +18,22 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RadioLite - {% block title %} {% endblock %}</title>
+    <title>RadioLiteFM - {% block title %} {% endblock %}</title>
     <link rel="stylesheet" href="{% static 'frontend/styles/styles.css' %}">
     <meta property="og:locale" content="hr_HR">
     <meta property="og:type" content="website">
-    <meta property="og:title" content="slusajradio.live">
-    <meta property="og:url" content="https://slusajradio.live/">
-    <meta property="og:site_name" content="prvi.hr">
+    <meta property="og:title" content="radiolitefm.com">
+    <meta property="og:url" content="radiolitefm.com">
+    <meta property="og:site_name" content="RadioLiteFM">
     <meta property="og:image" content="{% static 'frontend/assets/fav.png' %}">
     <link rel="icon" type="image/png" href="{% static 'frontend/assets/fav.png' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        .over_bg_txt {
+            font-size: 12px;
+        }
+    </style>
 
 </head>
 
@@ -120,6 +125,28 @@ $('.range').each(function() {
                     document.querySelector('.play-history').classList.remove('active')
 
                 }
+            if (location.pathname == "/search") {
+                document.querySelector("#search_sidebar").classList.add("active")
+            }
+            else if (location.pathname == "/") {
+                document.querySelector("#home_sidebar").classList.add("active")
+
+            }
+            else if (location.pathname == "/favourites") {
+                document.querySelector("#favSidebar").classList.add("active")
+
+            }
+            else if (location.pathname == "/popular") {
+                document.querySelector("#popularno").classList.add("active")
+            }
+            else if (location.pathname == "/explore") {
+                document.querySelector("#exploreSide").classList.add("active")
+            }
+            else if (location.pathname == "/latest") {
+                document.querySelector("#novo_side").classList.add("active")
+            }
+
+
             </script>
 </body>
 

@@ -1,6 +1,6 @@
 {% extends 'frontend/base.html' %}
 {% load static %}
-{% block title %} Home {% endblock %}
+{% block title %} Explore {% endblock %}
 
 {% block body %}
     <div class="row allPage">
@@ -257,6 +257,17 @@
         myfunc()
        
     
+        function getCurrentName() {
+            fetch(`/api/currentPlaying/${document.querySelector("#stationID").value}`)
+            .then(response => response.json())
+            .then(data => {
+            document.querySelector("#currentPlaying").innerHTML = data['playing']
+            
+            })
+        
+        }
+         
+        getCurrentName()
     var openRadio = document.getElementById("openRadio");
         openRadio.addEventListener('click', () => {
        

@@ -1,6 +1,6 @@
 {% extends 'frontend/base.html' %}
 {% load static %}
-{% block title %} {{ main }} {% endblock %}
+{% block title %} {{ keyword }} {% endblock %}
 
 {% block body %}
 <div class="row allPage">
@@ -12,7 +12,7 @@
                 <div class="player row align-center justify-between dir-col-onxs row-gap-3">
                     <div class="playermainactions row align-center col-gap-1">
                         <div class="play">
-                            <img id="modalbtn" src="{% static 'frontend/assets/play.svg' %}" alt="">
+                            <img id="playbtn1" src="{% static 'frontend/assets/play.svg' %}" alt="">
                             <a id="anchorbtn" style="display: none;"></a>
                         </div>
                         <div class="next">
@@ -38,7 +38,7 @@
                 </div>
                 <div class="background-white p-1  b-rad-18">
                     <div class="row justify-between">
-                        <h2 class="color-pink text-uppercase">{{ keyword }}</h2>
+                        <h2 class="color-pink text-uppercase"> {{ keyword }}</h2>
 
                     </div>
                 </div>
@@ -48,7 +48,18 @@
 
 
             </div>
-
+            <div class="col-3  background-white mt-2 ml-2 p-1 play-history">
+                <span onclick="closePlayHistory()" class="times showontablet"><strong>X</strong></span>
+                
+                    {% if options.newsSideAD %}
+                    <div>
+                        {{ options.newsSideAD | safe }}
+                    </div>
+                    {% endif %}
+                <div class="row dir-col row-gap-1 mt-2" id="recentPlayingList">
+                  
+                </div>
+            </div>
         </main>
     </div>
 
@@ -64,6 +75,7 @@
 
 </div>
 <script>
+    
     rad = '{{ keyword }}'
     fetch(`/api/radios/${rad}`)
         .then(response => response.json())
@@ -87,20 +99,20 @@
                                                 <div class="jp-type-single">
                                                     <div class="jp-gui jp-interface">
                                                         <div class="playBtnRadio">
-                                                            <img onclick="playRadio(${info[i]['id']})" class="playButtons" id="btnPlay${info[i]['id']}" style="font-size: 60px; cursor : pointer;" src="/static/frontend/assets/play_pink.svg">
+                                                            <img onclick="playRadio(${info[i]['id']}, '${info[i]['play_link'].replaceAll(" ", "-")}')" class="playButtons" id="btnPlay${info[i]['id']}" style="font-size: 60px; cursor : pointer;" src="/static/frontend/assets/play_pink.svg">
                                                         </div>
                                                     </div>
                                                 </div>
                                                                    
                                             </div>
-                                        <small class="hidden-xs" onclick="openPlayer(${info[i]['id']})" style="margin:1px; cursor : pointer;" >popup <img style="height: 14px; cursor: pointer;" class="mdi-action-launch" src="/static/frontend/assets/external.svg">			</small>
+                                        <small class="hidden-xs" onclick="openPlayer(${info[i]['id']}, '${info[i]['play_link'].replace(" ", "-")}')" style="margin:1px; cursor : pointer;" >popup <img style="height: 14px; cursor: pointer;" class="mdi-action-launch" src="/static/frontend/assets/external.svg">			</small>
                                         
                                         </td>
                                         <td style=" padding: 20px;">
                                             <h4 class="text-danger" style="display: inline; cursor : pointer"><a>${info[i]['play_link']}</a></h4>
                                            <br>Genres: ${elm}
                                        </td>
-                                       <a style="display:none;" id="anchor${info[i]['id']}" href="/radioPlayer/${info[i]['id']}/${info[i]['play_link'].replace(" ", "-")}"></a>
+                                       <a style="display:none;" id="anchor${info[i]['id']}" href="/radioPlayer/${info[i]['id']}/"></a>
                                 </tr>
                             </tbody>
                         </table>
@@ -111,9 +123,45 @@
             }
         })
     
-    function openPlayer(i) {
+        var audio = document.getElementById('audio');
+        
+
+    function addFav(i) {
+      fetch(`/api/addFavourite/${i}`)
+      document.querySelector(`#favHeart${i}}`).removeAttribute("onclick")
+      document.querySelector(`#favText${i}`).removeAttribute("onclick")
+      document.querySelector(`#favText${i}`).innerHTML = "Remove from Favourites"
+      document.querySelector(`#favHeart${i}`).src = "/static/frontend/assets/heart_red.svg"
+      document.querySelector(`#favHeart${i}`).setAttribute("onclick", "removeFav()")
+      document.querySelector(`#favText${i}`).setAttribute("onclick", "removeFav()")
+    }
+
+    var playbtn1 = document.getElementById("playbtn1");
+    playbtn1.addEventListener('click', () => {
+        if (audio.paused || audio.ended) {
+        playbtn.src = "/static/frontend/assets/pause.svg";
+    
+        
+        window.open(document.querySelector("#anchorbtn").href,'newwindow','width=480,height=750');
+        
+        }
+        else {
+            playbtn.src = "/static/frontend/assets/play.svg";
+        
+        }
+    })
+
+    function openPlayer(i, j) {
+       aud = document.querySelector(`#audio${i}`).src
        
-        window.open(document.querySelector(`#anchor${i}`).href,'newwindow','width=350,height=900');
+       if (aud.split("/")[0] == "http:") {
+            link = `http://radiolitefm.com/radioPlayer/${i}/${j}`
+        }
+        else {
+           link = `https://radiolitefm.com/radioPlayer/${i}/${j}`
+
+       }
+        window.open(link,'newwindow','width=350,height=900');
     }
     
     
@@ -145,7 +193,7 @@
         }
     }
 
-    function playRadio(i) {
+    function playRadio(i, j) {
         audio = document.querySelector(`#audio${i}`)
         playbtn = document.querySelector(`#btnPlay${i}`)
         
@@ -160,10 +208,10 @@
                         font-size: 12px;">
                             Due to restrictions of your browser, it is not possible to directly play this station on our website.
             
-                You can however play the station here in our slusajradio.live Popup-Player.</p>
+                You can however play the station here in our radioliteFM.com Popup-Player.</p>
             </div>
             <div class="content_buttons">
-                <button class="btnContent" onclick="openPlayer(${i})"> Open Popup</button>  
+                <button class="btnContent" onclick="openPlayer(${i}, '${j}')"> Open Popup</button>  
             </div>
                     
                 `
@@ -200,7 +248,7 @@
             document.querySelector("#stationID").value = data['radio_id']
             document.querySelector("#stationName").innerHTML = data['radio_name']
             document.querySelector("#stationLINK").value = data['link']
-            document.querySelector("#anchorbtn").href = `/radioplayer/${data['radio_id']}`
+            document.querySelector("#anchorbtn").href = `/radioplayer/${data['radio_id']}/${data['radio_name'].replaceAll(" ", "-")}`
 
             play_link = data['link']
 
@@ -209,26 +257,24 @@
             md_cnt = document.querySelector("#modal-content")
             if (play_split[0] == "http:") {
                 document.querySelector("#anchorbtn").href =
-                    `http://slusajradio.live/radioplayer/${data['radio_id']}`
+                    `http://radioliteFM.com/radioplayer/${data['radio_id']}/${data['radio_name'].replaceAll(" ", "-")}`
                 md_cnt.innerHTML = `
             <div class="content_item">
-            <p class="mr-50">
-                Zbog ograničenja internet preglednika radio stream je moguće slušati samo u novom pop-up prozoru
-                </p>
+           
             <p style="MARGIN: 0 50px;
     font-size: 12px;">
                 Due to restrictions of your browser, it is not possible to directly play this station on our website.
            
-            You can however play the station here in our slusajradio.live Popup-Player.</p>
+            You can however play the station here in our radioliteFM.com Popup-Player.</p>
             </div>
             <div class="content_buttons">
-                <button class="btnContent" id="playbtn"> Otvori Popup</button>  
+                <button class="btnContent" onclick="openPlayer(${info[i]['id']}, '${info[i]['play_link'].replace(" ", "-")}')" id="playbtn"> Open Popup</button>  
                 </div>
                 
             `
             } else {
                 document.querySelector("#anchorbtn").href =
-                    `https://slusajradio.live/radioplayer/${data['radio_id']}`
+                    `https://radioliteFM.com/radioplayer/${data['radio_id']}`
                 ebBtn.removeAttribute("id")
                 ebBtn.id = "playbtn1";
                 md_cnt.innerHTML = `
@@ -240,10 +286,10 @@
         font-size: 12px;">
                     Due to restrictions of your browser, it is not possible to directly play this station on our website.
             
-                You can however play the station here in our slusajradio.live Popup-Player.</p>
+                You can however play the station here in our radioliteFM.com Popup-Player.</p>
                 </div>
                 <div class="content_buttons">
-                    <button class="btnContent" id="playbtn"> Otvori Popup</button>  
+                    <button class="btnContent" onclick="openPlayer(${info[i]['id']}, '${info[i]['play_link'].replace(" ", "-")}')" id="playbtn"> Open Popup</button>  
                     </div>
                 `
 
@@ -258,7 +304,6 @@
         audio.volume = vol.value / 100
     })
     
-
 
 
 
@@ -305,16 +350,7 @@
     myfunc()
 
 
-    function getCurrentName() {
-        fetch(`/api/currentPlaying/${document.querySelector("#stationID").value}`)
-            .then(response => response.json())
-            .then(data => {
-                document.querySelector("#currentPlaying").innerHTML = data['playing']
-
-            })
-
-    }
-    getCurrentName()
+   
     var openRadio = document.getElementById("openRadio");
     openRadio.addEventListener('click', () => {
 

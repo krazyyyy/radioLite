@@ -1,4 +1,5 @@
-"""radioStation URL Configuration
+"""
+radioStation URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.2/topics/http/urls/
@@ -34,9 +35,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("", include("frontend.urls")),
     path("api/", include("api.urls")),
-    path('sitemap.xml', sitemap, # new
+    path('site_map.xml', sitemap, # new
     {'sitemaps': {'radio': GenericSitemap(info_dict, priority=0.6)}},
         name='django.contrib.sitemaps.views.sitemap'),
-    url(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT}),
-    url(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT, 'show_indexes': True}),
+    # url(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT}),
+    # url(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT, 'show_indexes': True}),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
